@@ -4,7 +4,7 @@ date_default_timezone_set('America/El_Salvador');
 define("SERVIDOR", "localhost");
 define("USUARIO", "root");
 define("CLAVE", "");
-define("DATABASE", "inventario_DB");
+define("DATABASE", "Sistema_Horarios");
 
 class ClsConnection
 {
