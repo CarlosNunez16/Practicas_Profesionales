@@ -1,3 +1,7 @@
+<?php
+    require_once("Connect.php");
+    $objeto = new ClsConnection();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -33,7 +37,7 @@
                 <div class="col-10 d-inline collapse navbar-collapse d-flex" id="navbarNavDropdown">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-white active" aria-current="page" href="index.php?pagina=Manta.php" title="¿Manta?">Manta</a>
+                            <a class="nav-link text-white active" aria-current="page" href="index.php?pagina=Manta.php&dia=Ninguno" title="¿Manta?">Manta</a>
                         </li>
                 </div>
             </ul>
@@ -56,6 +60,14 @@
                 CARRETERA A SANTA TECLA KM. 11, LA LIBERTAD, EL SALVADOR C.A.<br>
                 TEL. (503) 2132-7400</p>
         </footer>
+        <script LANGUAGE="JavaScript">
+        function abreSitio()
+        { 
+            var URL = "http://localhost/Prac_Prof/Practicas_Profesionales/index.php";
+            var web = document.form1.tipo.options[document.form1.tipo.selectedIndex].value;
+            window.open(URL+web, '_self', ''); 
+        }
+    </script>
     </div>
 </body>
 </html>

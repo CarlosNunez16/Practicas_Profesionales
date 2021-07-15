@@ -597,6 +597,79 @@ INSERT  INTO aula(id_aula,aula,tipo_aula,descripcion,idUbicacion_FK,capacidad_ho
 (21,'SUBEST_B','Taller','Taller:  SUBEST_B','1',12,1),
 (23,'Audi','Aula','Aula:  Audi','1',12,1);
 
+/*Data for the table `horario` */
+
+INSERT  INTO horario(id_horario,ha,hf) VALUES 
+(1,'07:00:00','07:50:00'),
+(2,'07:50:00','08:40:00'),
+(13,'09:00:00','09:50:00'),
+(21,'15:30:00','16:20:00'),
+(20,'14:40:00','15:30:00'),
+(19,'13:50:00','14:40:00'),
+(18,'13:00:00','13:50:00'),
+(16,'11:30:00','12:20:00'),
+(15,'10:40:00','11:30:00'),
+(14,'09:50:00','10:40:00'),
+(22,'16:20:00','17:10:00'),
+(23,'17:10:00','18:00:00');
+
+SELECT * FROM grupo
+
+/*Data for the table `grupo` */
+
+INSERT  INTO grupo(id_grupo,grupo,tipo,idcarrera_FK,`year`,ciclo,estado) VALUES 
+(1,'MAN11','U',4,2018,'I','Habilitado'),
+(2,'MAN11','A',4,2018,'I','Habilitado'),
+(3,'MAN11','B',4,2018,'I','Habilitado'),
+(4,'MAN31','U',4,2018,'III','Habilitado'),
+(5,'MAN31','A',4,2018,'III','Habilitado'),
+(6,'MAN31','B',4,2018,'III','Habilitado'),
+(7,'ELEC11','U',3,2018,'I','Habilitado'),
+(8,'ELEC11','A',3,2018,'I','Habilitado'),
+(9,'ELEC11','B',3,2018,'I','Habilitado'),
+(10,'ELEC12','U',3,2018,'I','Habilitado'),
+(11,'ELEC12','A',3,2018,'I','Habilitado'),
+(12,'ELEC12','B',3,2018,'I','Habilitado'),
+(13,'ELEC13','U',3,2018,'I','Habilitado'),
+(14,'ELEC13','A',3,2018,'I','Habilitado'),
+(15,'ELEC31','U',3,2018,'III','Habilitado'),
+(16,'ELEC31','A',3,2018,'III','Habilitado'),
+(17,'ELEC31','B',3,2018,'III','Habilitado'),
+(18,'ELEC32','U',3,2018,'III','Habilitado'),
+(19,'ELEC32','A',3,2018,'III','Habilitado'),
+(20,'ELEC32','B',3,2018,'III','Habilitado'),
+(21,'ELEC23','U',3,2018,'I','Habilitado'),
+(22,'ELEC23','A',3,2018,'I','Habilitado'),
+(23,'ELEC43','U',3,2018,'I','Habilitado'),
+(24,'ELEC43','A',3,2018,'I','Habilitado'),
+(25,'SIS11','U',2,2018,'I','Habilitado'),
+(26,'SIS11','A',2,2018,'I','Habilitado'),
+(27,'SIS11','B',2,2018,'I','Habilitado'),
+(28,'SIS12','U',2,2018,'I','Habilitado'),
+(29,'SIS12','A',2,2018,'I','Habilitado'),
+(30,'SIS12','B',2,2018,'I','Habilitado'),
+(31,'SIS13','U',2,2018,'I','Habilitado'),
+(32,'SIS13','A',2,2018,'I','Habilitado'),
+(33,'SIS13','B',2,2018,'I','Habilitado'),
+(34,'SIS31','U',2,2018,'III','Habilitado'),
+(35,'SIS31','A',2,2018,'III','Habilitado'),
+(36,'SIS31','B',2,2018,'III','Habilitado'),
+(37,'SIS32','U',2,2018,'III','Habilitado'),
+(38,'SIS32','A',2,2018,'III','Habilitado'),
+(39,'SIS32','B',2,2018,'III','Habilitado'),
+(40,'SIS33','U',2,2018,'III','Habilitado'),
+(41,'SIS33','A',2,2018,'III','Habilitado'),
+(42,'PAT11','U',5,2018,'I','Habilitado'),
+(43,'PAT11','A',5,2018,'I','Habilitado'),
+(44,'PAT11','B',5,2018,'I','Habilitado'),
+(45,'PAT31','U',5,2018,'III','Habilitado'),
+(46,'PAT31','A',5,2018,'III','Habilitado'),
+(47,'PAT31','B',5,2018,'III','Habilitado'),
+(48,'PAT32','U',5,2018,'III','Habilitado'),
+(49,'Ingles Basico Entre ','U',6,2018,'I','Habilitado'),
+(50,'Ingles Intermedio En','U',6,2018,'I','Habilitado'),
+(51,'Ingles Avanzado Entr','U',6,2018,'I','Habilitado'),
+(52,'Ingles Talk Entre Se','U',6,2018,'I','Habilitado');
 
 
 
