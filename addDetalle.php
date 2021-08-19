@@ -31,7 +31,8 @@
                 </div>
                 <div class="col-md-12">
                     <label for="grupos" class="form-label">Ciclo:</label>
-                    <select class="form-select" name="grupos" id="ciclo">
+                    <select class="form-select" name="ciclo" id="ciclo">
+                        <Option value=''>-- SELECCIONE --</Option>
                         <Option value='I'>I</Option>
                         <Option value='II'>II</Option>
                         <Option value='III'>III</Option>
@@ -39,105 +40,93 @@
                         <Option value='[ TODOS ]'>[ TODOS ]</Option>
                     </select>
                 </div>
-                <?php 
-                     echo"<script type='text/javascript'>
-                            
-                            if($('#ciclo option:selected').text() == 'I'){";
-                                echo "<div class='col-md-12'>
-                                    <label for='grupos' class='form-label'>Grupo:</label>
-                                    <select class='form-select' name='grupos'>";
-                                            $tabla = 'grupo';
-                                            $consulta = $objeto -> SQL_consulta_condicional($tabla, "id_grupo, grupo", "ciclo = I");
-                                            while ($fila = $consulta -> fetch_assoc())
-                                            {
-                                                echo "<Option value='$fila[id_grupo]'>$fila[grupo]</Option>";
-                                            }
-                                    echo "</select>
-                                </div>";
-                            echo"}else{
-                                alert('Olaaaaaaaaa');
-                            }
-                    </script>";
-                    $ciclo = "<script>  $('#ciclo') </script>";
-                    if ($ciclo == "I")
-                    {
-                        echo "<script> alert('Criko 1'); </script>";
-                    }
-                        echo $ciclo;
-                ?>
                 <div class="col-md-12">
                     <label for="grupos" class="form-label">Grupo:</label>
-                    <select class="form-select" name="grupos">
-                        <?php
-                            $tabla = 'grupos';
-                            $consulta = $objeto -> SQL_consulta($tabla, "idGrupo, nombre");
-                            while ($fila = $consulta -> fetch_assoc())
+                    <select class="form-select" name="grupos" id="grupos">
+                        <option value="">-- SELECCIONE --</option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label for="docente" class="form-label">Docente:</label>
+                    <select class="form-select" name="docente" id="docentes">
+                    <?php
+                        $tabla = 'docente';
+                        $consulta = $objeto -> SQL_consulta($tabla, "id_docente, nombres_us, apellidos_us");
+                        echo "<option value=''>-- SELECCIONE --</option>";
+                        while ($fila = $consulta -> fetch_assoc())
+                        {
+                            echo "<Option value='$fila[id_docente]'>$fila[apellidos_us], $fila[nombres_us]</Option>";
+                        }
+                    ?>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label for="materia" class="form-label">Materia:</label>
+                    <select class="form-select" name="materia" id="materias">
+                        <option value="">-- SELECCIONE --</option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label for="aula" class="form-label">Aula:</label>
+                    <select class="form-select" name="aula" id="aula">
+                        <option value="<?php echo $_GET["aula"];?>"><?php echo $_GET["aula"];?></option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label for="hInicio" class="form-label">Hora inicio:</label>
+                    <select class="form-select" name="hInicio" id="hInicio">
+                        <option value="<?php echo $_GET["ha"];?>"><?php echo $_GET["ha"];?></option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label for="hFin" class="form-label">Hora fin:</label>
+                    <select class="form-select" name="hFin" id="hFin">
+                        <?php 
+                            if($_GET["ha"] == "07:00:00")
                             {
-                                echo "<Option value='$fila[idGrupo]'>$fila[nombre]</Option>";
+                                $tabla = 'horas_ocupadas';
+                                $consulta = $objeto -> SQL_consulta_condicional($tabla, "*", "idHorario_FK = 2");
+
+                                
+                                echo "
+                                    <option value='07:50:00'>07:50:00</option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                    <option value=''></option>
+                                ";
                             }
                         ?>
                     </select>
                 </div>
-                <div class="col-md-6">
-                    <label for="subgrupos" class="form-label">Subgrupo:</label>
-                    <select class="form-select" name="subgrupos">
-                        <?php
-                            $tabla = 'subgrupos';
-                            $consulta = $objeto -> SQL_consulta($tabla, "idSubgrupo, nombre");
-                            while ($fila = $consulta -> fetch_assoc())
-                            {
-                                echo "<Option value='$fila[idSubgrupo]'>$fila[nombre]</Option>";
-                            }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="nombre">Nombre: </label>
-                    <input class="form-control" type="text" name="nombre" title="Ingresa tu nombre" required>        
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="marca">Marca: </label>
-                    <input class="form-control" type="text" name="marca" required>      
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="modelo">Modelo: </label>
-                    <input class="form-control" type="text" name="modelo" required>    
-                </div>
-                <div class="col-md-1">
-                    <label class="form-label" for="color">Color: </label>
-                    <input class="form-control form-control-color" type="color" name="color" required>    
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="serie">Número de serie: </label>
-                    <input class="form-control" type="text" name="serie" required>    
-                </div>
-                <div class="col-md-6">
-                    <label for="usuarios" class="form-label">Usuario:</label>
-                    <select class="form-select" name="usuarios">
-                        <?php
-                            $tabla = 'usuarios';
-                            $consulta = $objeto -> SQL_consulta($tabla." where tipo_usuario='Administrador' or tipo_usuario='Empleado'", "carnet, nombres, apellidos");
-                            while ($fila = $consulta -> fetch_assoc())
-                            {
-                                echo "<Option value='$fila[carnet]'>$fila[nombres] $fila[apellidos]</Option>";
-                            }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="ubicacion">Ubicación: </label>
-                    <input class="form-control" type="text" name="ubicacion" required>   
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="calidad">Calidad: </label>
-                    <select class="form-select" name="calidad">
-                        <Option value='Excelente'>Excelente</Option>
-                        <Option value='Muy bueno'>Muy bueno</Option>
-                        <Option value='Bueno'>Bueno</Option>
-                        <Option value='Malo'>Malo</Option>
-                        <Option value='Necesita reparación'>Necesita reparación</Option>
-                    </select>     
-                </div>
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("#ciclo").change(function(){
+                            $.get("ajax/Grupos.php","ciclo="+$("#ciclo").val(), function(data){
+                                $("#grupos").html(data);
+                                console.log(data);
+                            });
+                        });
+
+                        $("#docentes").change(function(){
+                            $.get("ajax/Materias.php","docente="+$("#docentes").val(), function(data){
+                                $("#materias").html(data);
+                                console.log(data);
+                            });
+                        });
+                    });
+                </script>
                 <div class="col-md-12">
                     <input class="btn btn-primary" type="submit" name="enviar" value="Guardar">
                 </div>

@@ -1,6 +1,6 @@
-CREATE DATABASE Sistema_Horarios;
+CREATE DATABASE SistemaHorarios;
 
-USE Sistema_Horarios;
+USE SistemaHorarios;
 
 DROP TABLE IF EXISTS hr_ubicacion;
 
@@ -128,7 +128,6 @@ ciclo VARCHAR(4) NOT NULL COMMENT 'I',
 YEAR INT(4) NOT NULL,
 dia VARCHAR(25) NOT NULL,
 tipo VARCHAR(4) NOT NULL,
-horas INT(2) NOT NULL,
 `version` VARCHAR(2) NOT NULL,
 fecha_ini DATE NOT NULL,
 fecha_fin DATE NOT NULL,
@@ -186,13 +185,11 @@ hf TIME NOT NULL,
 PRIMARY KEY (id_horario)
 );
 
-DROP TABLE IF EXISTS horas;
+DROP TABLE IF EXISTS horas_ocupadas;
 
-CREATE TABLE horas (
+CREATE TABLE horas_ocupadas (
 id_horas INT NOT NULL AUTO_INCREMENT,
 idHorario_FK INT NOT NULL,
-ha TIME NOT NULL,
-hf TIME NOT NULL,
 PRIMARY KEY (id_horas),
 FOREIGN KEY (idHorario_FK) REFERENCES horario (id_horario)
 );
@@ -613,7 +610,7 @@ INSERT  INTO horario(id_horario,ha,hf) VALUES
 (22,'16:20:00','17:10:00'),
 (23,'17:10:00','18:00:00');
 
-SELECT * FROM grupo
+SELECT hf FROM hora WHERE hf LIKE ''
 
 /*Data for the table `grupo` */
 
@@ -671,24 +668,16 @@ INSERT  INTO grupo(id_grupo,grupo,tipo,idcarrera_FK,`year`,ciclo,estado) VALUES
 (51,'Ingles Avanzado Entr','U',6,2018,'I','Habilitado'),
 (52,'Ingles Talk Entre Se','U',6,2018,'I','Habilitado');
 
+INSERT  INTO docente(id_docente,carnet,nombres_us,apellidos_us,tipo,tel_casa,celular,email, estado, clave, idDepartamento_FK2, contrato, fechai, fechaf, nhoras, hpagadas, permanente, acceso_sistema, es_administrador, es_asesor, es_jurado, si_publica) VALUES 
+(1,'1000','Ricardo','Quintanilla','Administrador','16181821','78279172', 'repadila@si', 'si', 'clave', 1, 'si', '17/02/2019', '17/02/2019', 2, 2, 1, 1, 1, 1, 1, 1),
+(2,'2000','Henri','Martinez','Administrador','16181821','78279172', 'repadila@si', 'si', 'clave', 2, 'si', '17/02/2019', '17/02/2019', 2, 2, 1, 1, 1, 1, 1, 1),
+(3,'3000','Vladimir','Aguilar','Administrador','16181821','78279172', 'repadila@si', 'si', 'clave', 3, 'si', '17/02/2019', '17/02/2019', 2, 2, 1, 1, 1, 1, 1, 1),
+(4,'4000','Yaquelin','Méndez','Administrador','16181821','78279172', 'repadila@si', 'si', 'clave', 4, 'si', '17/02/2019', '17/02/2019', 2, 2, 1, 1, 1, 1, 1, 1),
+(5,'5000','Jenny','García','Administrador','16181821','78279172', 'repadila@si', 'si', 'clave', 5, 'si', '17/02/2019', '17/02/2019', 2, 2, 1, 1, 1, 1, 1, 1),
+(6,'6000','César','Barrera','Administrador','16181821','78279172', 'repadila@si', 'si', 'clave', 7, 'si', '17/02/2019', '17/02/2019', 2, 2, 1, 1, 1, 1, 1, 1);
 
+/*Data for the table `detalle` */
+INSERT  INTO detalle(idDocente_FK,idGrupo_FK,idMateria_FK,idAula_FK,ha,hf,ciclo,dia,tipo,`version`,fecha_ini,fecha_fin,comentario_reserva,carnet_usuario) VALUES 
+(1,27,11,1,'07:00:00','07:50:00','I', 'Lunes', 'tipo', '1','1000-01-01','1000-01-01','s', '1000');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+SELECT idMateria_FK, idGrupo_FK, idDocente_FK FROM detalle INNER JOIN materia ON (detalle.idMateria_FK=materia)

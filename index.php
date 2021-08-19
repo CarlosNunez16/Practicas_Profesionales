@@ -18,7 +18,7 @@
     rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <title>Administrador</title> 
 </head>
-<body onload="mueveReloj()"> 
+<body onload="mueveReloj()" style="zoom:85%"> 
     <div class="container-fluid">
         <div class="row">
             <header>
@@ -63,7 +63,7 @@
         <script LANGUAGE="JavaScript">
         function abreSitio()
         { 
-            var URL = "http://localhost/Prac_Prof/Practicas_Profesionales/index.php";
+            var URL = "http://localhost/PracticasProfesionales/index.php";
             var web = document.form1.tipo.options[document.form1.tipo.selectedIndex].value;
             window.open(URL+web, '_self', ''); 
         }
