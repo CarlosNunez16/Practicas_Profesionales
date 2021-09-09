@@ -678,6 +678,11 @@ INSERT  INTO docente(id_docente,carnet,nombres_us,apellidos_us,tipo,tel_casa,cel
 
 /*Data for the table `detalle` */
 INSERT  INTO detalle(idDocente_FK,idGrupo_FK,idMateria_FK,idAula_FK,ha,hf,ciclo,dia,tipo,`version`,fecha_ini,fecha_fin,comentario_reserva,carnet_usuario) VALUES 
-(1,27,11,1,'07:00:00','07:50:00','I', 'Lunes', 'tipo', '1','1000-01-01','1000-01-01','s', '1000');
+(1,27,11,9,'07:00:00','07:50:00','I', 'Lunes', 'tipo', '1','1000-01-01','1000-01-01','s', '1000');
 
-SELECT idMateria_FK, idGrupo_FK, idDocente_FK FROM detalle INNER JOIN materia ON (detalle.idMateria_FK=materia)
+SELECT materia.materia, materia.codigo_materia, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo 
+FROM detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)
+WHERE dia = 'Lunes' AND ha = '07:00:00' AND aula.aula = '101'
+
+SELECT * FROM detalle
+

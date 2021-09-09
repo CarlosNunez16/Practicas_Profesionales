@@ -49,6 +49,7 @@
                     <tbody>
                             <tr>";
                                  
+                                $n=0;
                                 $tabla = 'detalle';
                                 $consultahr = $objeto -> SQL_consulta_condicional($tabla,"materia,codigo_materia","id_horario = 1"); 
 
@@ -57,15 +58,37 @@
                                 while ($fila = $consultahr -> fetch_assoc())
                                 {
                                     echo "<td class='table-info'>$fila[ha] $fila[hf]</td>";
-                                    $ha=$fila['ha'];
+                                    $ha=$fila['ha']; //de aqui se tomara para la hora
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $tabla = 'detalle';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla,"ha,hf","id_horario = 1");
-                                        ?>
+                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo';
+                                        $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$array[$n]."'");
+
+                                        // var_dump($consulta);
+
+                                        if(mysqli_num_rows($consulta) < 1)
+                                        {
+                                            ?>
                                             <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $array[$i];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
-                                        <?php
+                                            <?php
+                                        }
+                                        else
+                                        {
+                                            while ($fila = $consulta -> fetch_assoc())
+									        {
+                                                echo "
+                                                    <td>
+                                                        $fila[Materia],
+                                                        $fila[CodMateria],
+                                                        $fila[NombresUS] $fila[ApellidosUS],
+                                                        $fila[Grupo]
+                                                    </td>
+                                                ";
+                                            }
+                                        }
+                                        $n++;
                                     }
                                 
                             echo"</tr>

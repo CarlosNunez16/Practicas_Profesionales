@@ -25,9 +25,9 @@
             <h1 class="alert alert-primary text-center">AGREGAR HORARIO</h1>
             <form class="row g-3 needs-validation" method="post">
                 <div class="col-md-6 d-inline">
-                    <p class="d-inline" for="ciclo">Ciclo: I</p>&nbsp&nbsp|&nbsp&nbsp 
-                    <p class="d-inline" for="año">Año: 2021</p>&nbsp&nbsp|&nbsp&nbsp     
-                    <p class="d-inline" for="dia">Día: <?php echo $_GET["dia"]; ?></p>  
+                    <p class="d-inline">Ciclo: I</p>&nbsp&nbsp|&nbsp&nbsp 
+                    <p class="d-inline">Año: 2021</p>&nbsp&nbsp|&nbsp&nbsp     
+                    <p class="d-inline">Día: <?php echo $_GET["dia"]; ?></p>  
                 </div>
                 <div class="col-md-12">
                     <label for="grupos" class="form-label">Ciclo:</label>
@@ -134,3 +134,30 @@
         </div>
     </div>
 </body>
+
+<?php
+    if(isset($_POST["enviar"]))
+    {
+        $datos[] = $_POST['docente'];
+        $datos[] = $_POST['grupos'];
+        $datos[] = $_POST['materia'];
+        $datos[] = $_GET['aula'];
+        $datos[] = $_GET['ha'];
+        $datos[] = $_POST['hFin'];
+        $datos[] = $_POST['ciclo'];
+        $datos[] = $_GET['dia'];
+        $datos[] = "tipo";
+        $datos[] = "1";
+        $datos[] = "1000-01-01";
+        $datos[] = "1000-01-01";
+        $datos[] = "s";
+        $datos[] = "1000";
+
+        echo"<pre>";
+        var_dump($datos);
+        echo"</pre>";
+        $campos = array('idDocente_FK','idGrupo_FK', 'idMateria_FK', 'idAula_FK', 'ha', 'hf', 'ciclo', 'dia', 'tipo', 'version', 'fecha_ini', 'fecha_fin', 'comentario_reserva', 'carnet_usuario');
+        $tabla = "detalle";
+        $rs = $objeto -> SQL_insert($tabla, $campos, $datos);
+    }
+?>
