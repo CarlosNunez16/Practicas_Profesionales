@@ -685,6 +685,7 @@ FROM detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INN
 WHERE dia = 'Lunes' AND ha = '07:00:00' AND aula.aula = '101'
 
 SELECT ha FROM detalle WHERE dia = 'Lunes' && idAula_FK = 1;
-SELECT * FROM horario;
+SELECT * FROM detalle WHERE idAula_FK = 1;
+SELECT * FROM detalle;
 
-DELETE FROM detalle WHERE idAula_FK = 10
+DELETE FROM detalle WHERE idAula_FK = 1 && ha = '07:50:00' OR ha = '09:50:00'
