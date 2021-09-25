@@ -684,5 +684,7 @@ SELECT materia.materia, materia.codigo_materia, docente.nombres_us AS NombresUS,
 FROM detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)
 WHERE dia = 'Lunes' AND ha = '07:00:00' AND aula.aula = '101'
 
-SELECT * FROM detalle
+SELECT ha FROM detalle WHERE dia = 'Lunes' && idAula_FK = 1;
+SELECT * FROM horario;
 
+DELETE FROM detalle WHERE idAula_FK = 10

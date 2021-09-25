@@ -69,7 +69,7 @@
                 <div class="col-md-12">
                     <label for="aula" class="form-label">Aula:</label>
                     <select class="form-select" name="aula" id="aula">
-                        <option value="<?php echo $_GET["aula"];?>"><?php echo $_GET["aula"];?></option>
+                        <option value="<?php echo $_GET["id_aula"];?>"><?php echo $_GET["aula"];?></option>
                     </select>
                 </div>
                 <div class="col-md-12">
@@ -79,37 +79,56 @@
                     </select>
                 </div>
                 <div class="col-md-12">
-                    <label for="hFin" class="form-label">Hora fin:</label>
-                    <select class="form-select" name="hFin" id="hFin">
-                        <?php 
-                            if($_GET["ha"] == "07:00:00")
+                    <label for="carreras" class="form-label" style="color:#8B0000">Selecciona los bloques:</label>
+                    
+                    <?php
+                        $tabla = 'detalle';
+                        $consulta = $objeto -> SQL_consulta_condicional($tabla, "ha", "dia = '".$_GET["dia"]."' && idAula_FK = ".$_GET["id_aula"]."");
+                            
+                        if(mysqli_num_rows($consulta) < 1)
+                        {
+                                $tabla = 'horario';
+                                $consultaHr = $objeto -> SQL_consulta($tabla, "ha,hf");
+                                while ($filaHr = $consultaHr -> fetch_assoc())
+                                {
+                                    echo"<div class='form-check text-start'>";
+                                        if($filaHr['ha'] == $_GET["ha"]) 
+                                        {
+                                            echo "si";
+                                            echo"<input class='form-check-input' type='checkbox' name='bloques[]' value='$filaHr[ha]' checked disabled>";
+                                        }
+                                        else
+                                        {
+                                            echo "no";
+                                            echo"<input class='form-check-input' type='checkbox' name='bloques[]' value='$filaHr[ha]'>";
+                                        }
+                                        echo"<label class='form-check-label' value='$filaHr[ha]'>$filaHr[ha] $filaHr[hf]</label>
+                                    </div>";
+                                }
+                        }
+                        else
+                        {
+                            while ($fila = $consulta -> fetch_assoc())
                             {
-                                $tabla = 'horas_ocupadas';
-                                $consulta = $objeto -> SQL_consulta_condicional($tabla, "*", "idHorario_FK = 2");
-
-                                
-                                echo "
-                                    <option value='07:50:00'>07:50:00</option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                    <option value=''></option>
-                                ";
+                                $tabla = 'horario';
+                                $consultaHr = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha != '".$fila["ha"]."'");
+                                while ($filaHr = $consultaHr -> fetch_assoc())
+                                {
+                                    echo"<div class='form-check text-start'>";
+                                        if($filaHr['ha'] == $_GET["ha"]) 
+                                        {
+                                            echo"<input class='form-check-input' type='checkbox' name='bloques[]' value='$filaHr[ha]' checked disabled>";
+                                        }
+                                        else
+                                        {
+                                            echo"<input class='form-check-input' type='checkbox' name='bloques[]' value='$filaHr[ha]'>";
+                                        }
+                                        echo"<label class='form-check-label' value='$filaHr[ha]'>$filaHr[ha] $filaHr[hf]</label>
+                                    </div>";
+                                } 
                             }
-                        ?>
-                    </select>
-                </div>
+                        }
+                    ?>
                 <script type="text/javascript">
                     $(document).ready(function(){
                         $("#ciclo").change(function(){
@@ -138,26 +157,44 @@
 <?php
     if(isset($_POST["enviar"]))
     {
-        $datos[] = $_POST['docente'];
-        $datos[] = $_POST['grupos'];
-        $datos[] = $_POST['materia'];
-        $datos[] = $_GET['aula'];
-        $datos[] = $_GET['ha'];
-        $datos[] = $_POST['hFin'];
-        $datos[] = $_POST['ciclo'];
-        $datos[] = $_GET['dia'];
-        $datos[] = "tipo";
-        $datos[] = "1";
-        $datos[] = "1000-01-01";
-        $datos[] = "1000-01-01";
-        $datos[] = "s";
-        $datos[] = "1000";
+        if (isset($_POST['bloques']))
+        {
+            $n = count($_POST['bloques']);
+            $bloques = $_POST['bloques'];
+        }
 
-        echo"<pre>";
-        var_dump($datos);
-        echo"</pre>";
-        $campos = array('idDocente_FK','idGrupo_FK', 'idMateria_FK', 'idAula_FK', 'ha', 'hf', 'ciclo', 'dia', 'tipo', 'version', 'fecha_ini', 'fecha_fin', 'comentario_reserva', 'carnet_usuario');
-        $tabla = "detalle";
-        $rs = $objeto -> SQL_insert($tabla, $campos, $datos);
+        for ($i = 0; $i < $n; $i++)
+        {
+            $datos[] = $_POST['docente'];
+            $datos[] = $_POST['grupos'];
+            $datos[] = $_POST['materia'];
+            $datos[] = $_GET['id_aula'];
+
+            $tabla = 'horario';
+            $consultaHr = $objeto -> SQL_consulta($tabla, "ha,hf");
+            while ($filaHr = $consultaHr -> fetch_assoc())
+            {
+                if($bloques == $filaHr["ha"])
+                {
+                    
+                }
+            }
+            
+            $datos[] = $_GET['ha'];
+            $datos[] = $_POST['hFin'];
+            $datos[] = $_POST['ciclo'];
+            $datos[] = $_GET['dia'];
+            $datos[] = "tipo";
+            $datos[] = "1";
+            $datos[] = "1000-01-01";
+            $datos[] = "1000-01-01";
+            $datos[] = "s";
+            $datos[] = "1000";
+
+            $campos = array('idDocente_FK','idGrupo_FK', 'idMateria_FK', 'idAula_FK', 'ha', 'hf', 'ciclo', 'dia', 'tipo', 'version', 'fecha_ini', 'fecha_fin', 'comentario_reserva', 'carnet_usuario');
+            $tabla = "detalle";
+            $rs = $objeto -> SQL_insert($tabla, $campos, $datos);
+        }
+        echo "<script languaje='javascript' type='text/javascript'>window.opener.location.reload(); window.close();</script>";
     }
 ?>
