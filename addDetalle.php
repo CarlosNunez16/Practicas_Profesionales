@@ -94,12 +94,10 @@
                                     echo"<div class='form-check text-start'>";
                                         if($filaHr['ha'] == $_GET["ha"]) 
                                         {
-                                            echo "si";
-                                            echo"<input class='form-check-input' type='checkbox' name='bloques[]' value='$filaHr[ha]' checked disabled>";
+                                            echo"<input class='form-check-input' type='checkbox' name='bloques[]' value='$filaHr[ha]' checked>";
                                         }
                                         else
                                         {
-                                            echo "no";
                                             echo"<input class='form-check-input' type='checkbox' name='bloques[]' value='$filaHr[ha]'>";
                                         }
                                         echo"<label class='form-check-label' value='$filaHr[ha]'>$filaHr[ha] $filaHr[hf]</label>
@@ -162,38 +160,41 @@
             $n = count($_POST['bloques']);
             $bloques = $_POST['bloques'];
         }
-
-        for ($i = 0; $i < $n; $i++)
+        $i=0;
+    
+        $tabla = 'horario';
+        $consultaHr = $objeto -> SQL_consulta($tabla, "ha,hf");
+        while ($filaHr = $consultaHr -> fetch_assoc())
         {
-            $datos[] = $_POST['docente'];
-            $datos[] = $_POST['grupos'];
-            $datos[] = $_POST['materia'];
-            $datos[] = $_GET['id_aula'];
-
-            $tabla = 'horario';
-            $consultaHr = $objeto -> SQL_consulta($tabla, "ha,hf");
-            while ($filaHr = $consultaHr -> fetch_assoc())
+            if ($i<$n)
             {
-                if($bloques == $filaHr["ha"])
+                if($filaHr["ha"] == $bloques[$i])
                 {
-                    
+                    $datos[] = $_POST['docente'];
+                    $datos[] = $_POST['grupos'];
+                    $datos[] = $_POST['materia'];
+                    $datos[] = $_GET['id_aula'];
+                    $datos[] = $filaHr["ha"];
+                    $datos[] = $filaHr["hf"];                
+                    $datos[] = $_POST['ciclo'];
+                    $datos[] = $_GET['dia'];
+                    $datos[] = "tipo";
+                    $datos[] = "1";
+                    $datos[] = "1000-01-01";
+                    $datos[] = "1000-01-01";
+                    $datos[] = "s";
+                    $datos[] = "1000";
+
+                    echo "<pre>";
+                    var_dump($datos);
+                    echo "</pre>";
+                    $campos = array('idDocente_FK','idGrupo_FK', 'idMateria_FK', 'idAula_FK', 'ha', 'hf', 'ciclo', 'dia', 'tipo', 'version', 'fecha_ini', 'fecha_fin', 'comentario_reserva', 'carnet_usuario');
+                    $tabla = "detalle";
+                    $rs = $objeto -> SQL_insert($tabla, $campos, $datos);
+                    $i++;
                 }
             }
-            
-            $datos[] = $_GET['ha'];
-            $datos[] = $_POST['hFin'];
-            $datos[] = $_POST['ciclo'];
-            $datos[] = $_GET['dia'];
-            $datos[] = "tipo";
-            $datos[] = "1";
-            $datos[] = "1000-01-01";
-            $datos[] = "1000-01-01";
-            $datos[] = "s";
-            $datos[] = "1000";
-
-            $campos = array('idDocente_FK','idGrupo_FK', 'idMateria_FK', 'idAula_FK', 'ha', 'hf', 'ciclo', 'dia', 'tipo', 'version', 'fecha_ini', 'fecha_fin', 'comentario_reserva', 'carnet_usuario');
-            $tabla = "detalle";
-            $rs = $objeto -> SQL_insert($tabla, $campos, $datos);
+            unset($datos);
         }
         echo "<script languaje='javascript' type='text/javascript'>window.opener.location.reload(); window.close();</script>";
     }

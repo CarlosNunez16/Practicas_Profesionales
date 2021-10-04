@@ -22,9 +22,9 @@
 <?php
     if ($_GET["dia"] == "Ninguno")
     {
-
+        echo"<h2>seleccione un día</h2>";
     }
-    elseif($_GET["dia"] == "Lunes")
+    else
     {
         echo"<div class='row d-flex justify-content-center'>
             <div class='col-12 m-3'>
