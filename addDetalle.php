@@ -27,7 +27,8 @@
                 <div class="col-md-6 d-inline">
                     <p class="d-inline">Ciclo: I</p>&nbsp&nbsp|&nbsp&nbsp 
                     <p class="d-inline">Año: 2021</p>&nbsp&nbsp|&nbsp&nbsp     
-                    <p class="d-inline">Día: <?php echo $_GET["dia"]; ?></p>  
+                    <p class="d-inline">Día: <?php echo $_GET["dia"]; ?></p>&nbsp&nbsp|&nbsp&nbsp  
+                    <p class="d-inline">Aula: <?php echo $_GET["aula"]; ?></p> 
                 </div>
                 <div class="col-md-12">
                     <label for="grupos" class="form-label">Ciclo:</label>
@@ -41,8 +42,8 @@
                     </select>
                 </div>
                 <div class="col-md-12">
-                    <label for="grupos" class="form-label">Grupo:</label>
-                    <select class="form-select" name="grupos" id="grupos">
+                    <label for="materia" class="form-label">Materia:</label>
+                    <select class="form-select" name="materia" id="materias">
                         <option value="">-- SELECCIONE --</option>
                     </select>
                 </div>
@@ -61,72 +62,14 @@
                     </select>
                 </div>
                 <div class="col-md-12">
-                    <label for="materia" class="form-label">Materia:</label>
-                    <select class="form-select" name="materia" id="materias">
+                    <label for="grupos" class="form-label">Grupo:</label>
+                    <select class="form-select" name="grupos" id="grupos">
                         <option value="">-- SELECCIONE --</option>
                     </select>
                 </div>
-                <div class="col-md-12">
-                    <label for="aula" class="form-label">Aula:</label>
-                    <select class="form-select" name="aula" id="aula">
-                        <option value="<?php echo $_GET["id_aula"];?>"><?php echo $_GET["aula"];?></option>
-                    </select>
+                <div class="col-md-12" id="bloques">
+
                 </div>
-                <div class="col-md-12">
-                    <label for="hInicio" class="form-label">Hora inicio:</label>
-                    <select class="form-select" name="hInicio" id="hInicio">
-                        <option value="<?php echo $_GET["ha"];?>"><?php echo $_GET["ha"];?></option>
-                    </select>
-                </div>
-                <div class="col-md-12">
-                    <label for="carreras" class="form-label" style="color:#8B0000">Selecciona los bloques:</label>
-                    
-                    <?php
-                        $tabla = 'detalle';
-                        $consulta = $objeto -> SQL_consulta_condicional($tabla, "ha", "dia = '".$_GET["dia"]."' && idAula_FK = ".$_GET["id_aula"]."");
-                            
-                        if(mysqli_num_rows($consulta) < 1)
-                        {
-                                $tabla = 'horario';
-                                $consultaHr = $objeto -> SQL_consulta($tabla, "ha,hf");
-                                while ($filaHr = $consultaHr -> fetch_assoc())
-                                {
-                                    echo"<div class='form-check text-start'>";
-                                        if($filaHr['ha'] == $_GET["ha"]) 
-                                        {
-                                            echo"<input class='form-check-input' type='checkbox' name='bloques[]' value='$filaHr[ha]' checked>";
-                                        }
-                                        else
-                                        {
-                                            echo"<input class='form-check-input' type='checkbox' name='bloques[]' value='$filaHr[ha]'>";
-                                        }
-                                        echo"<label class='form-check-label' value='$filaHr[ha]'>$filaHr[ha] $filaHr[hf]</label>
-                                    </div>";
-                                }
-                        }
-                        else
-                        {
-                            while ($fila = $consulta -> fetch_assoc())
-                            {
-                                $tabla = 'horario';
-                                $consultaHr = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha != '".$fila["ha"]."'");
-                                while ($filaHr = $consultaHr -> fetch_assoc())
-                                {
-                                    echo"<div class='form-check text-start'>";
-                                        if($filaHr['ha'] == $_GET["ha"]) 
-                                        {
-                                            echo"<input class='form-check-input' type='checkbox' name='bloques[]' value='$filaHr[ha]' checked disabled>";
-                                        }
-                                        else
-                                        {
-                                            echo"<input class='form-check-input' type='checkbox' name='bloques[]' value='$filaHr[ha]'>";
-                                        }
-                                        echo"<label class='form-check-label' value='$filaHr[ha]'>$filaHr[ha] $filaHr[hf]</label>
-                                    </div>";
-                                } 
-                            }
-                        }
-                    ?>
                 <script type="text/javascript">
                     $(document).ready(function(){
                         $("#ciclo").change(function(){
@@ -136,9 +79,22 @@
                             });
                         });
 
-                        $("#docentes").change(function(){
-                            $.get("ajax/Materias.php","docente="+$("#docentes").val(), function(data){
+                        $("#ciclo").change(function(){
+                            $.get("ajax/Materias.php","ciclo="+$("#ciclo").val(), function(data){
                                 $("#materias").html(data);
+                                console.log(data);
+                            });
+                        });
+
+                        const valores = window.location.search;
+                        const urlParams = new URLSearchParams(valores);
+                        var dia = urlParams.get('dia');
+                        var ha = urlParams.get('ha');
+                        var id_aula = urlParams.get('id_aula');
+
+                        $("#grupos").change(function(){
+                            $.get("ajax/bloques.php?dia="+dia+"&ha="+ha+"&id_aula="+id_aula+"&docente="+$("#docentes").val()+"&grupo="+$("#grupos").val()+"", function(data){                                
+                                $("#bloques").html(data);
                                 console.log(data);
                             });
                         });
@@ -161,41 +117,39 @@
             $bloques = $_POST['bloques'];
         }
         $i=0;
-    
+
         $tabla = 'horario';
         $consultaHr = $objeto -> SQL_consulta($tabla, "ha,hf");
         while ($filaHr = $consultaHr -> fetch_assoc())
         {
             if ($i<$n)
             {
-                if($filaHr["ha"] == $bloques[$i])
-                {
-                    $datos[] = $_POST['docente'];
-                    $datos[] = $_POST['grupos'];
-                    $datos[] = $_POST['materia'];
-                    $datos[] = $_GET['id_aula'];
-                    $datos[] = $filaHr["ha"];
-                    $datos[] = $filaHr["hf"];                
-                    $datos[] = $_POST['ciclo'];
-                    $datos[] = $_GET['dia'];
-                    $datos[] = "tipo";
-                    $datos[] = "1";
-                    $datos[] = "1000-01-01";
-                    $datos[] = "1000-01-01";
-                    $datos[] = "s";
-                    $datos[] = "1000";
+                    if($filaHr["ha"] == $bloques[$i])
+                    {
+                        $datos[] = $_POST['docente'];
+                        $datos[] = $_POST['grupos'];
+                        $datos[] = $_POST['materia'];
+                        $datos[] = $_GET['id_aula'];
+                        $datos[] = $filaHr["ha"];
+                        $datos[] = $filaHr["hf"];                
+                        $datos[] = $_POST['ciclo'];
+                        $datos[] = $_GET['dia'];
+                        $datos[] = "tipo";
+                        $datos[] = "1";
+                        $datos[] = "1000-01-01";
+                        $datos[] = "1000-01-01";
+                        $datos[] = "s";
+                        $datos[] = "1000";
 
-                    echo "<pre>";
-                    var_dump($datos);
-                    echo "</pre>";
-                    $campos = array('idDocente_FK','idGrupo_FK', 'idMateria_FK', 'idAula_FK', 'ha', 'hf', 'ciclo', 'dia', 'tipo', 'version', 'fecha_ini', 'fecha_fin', 'comentario_reserva', 'carnet_usuario');
-                    $tabla = "detalle";
-                    $rs = $objeto -> SQL_insert($tabla, $campos, $datos);
-                    $i++;
-                }
+                        $campos = array('idDocente_FK','idGrupo_FK', 'idMateria_FK', 'idAula_FK', 'ha', 'hf', 'ciclo', 'dia', 'tipo', 'version', 'fecha_ini', 'fecha_fin', 'comentario_reserva', 'carnet_usuario');
+                        $tabla = "detalle";
+                        $rs = $objeto -> SQL_insert($tabla, $campos, $datos);
+                        $i++;
+                    }
             }
             unset($datos);
         }
+        
         echo "<script languaje='javascript' type='text/javascript'>window.opener.location.reload(); window.close();</script>";
     }
 ?>

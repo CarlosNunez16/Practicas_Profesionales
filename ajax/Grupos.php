@@ -9,12 +9,12 @@ if ($_GET["ciclo"] == "[ TODOS ]")
 }
 else
 {
-    $consulta = $objeto -> SQL_consulta_condicional($tabla,"id_grupo, grupo","ciclo like '".$_GET["ciclo"]."'");
+    $consulta = $objeto -> SQL_consulta_condicional($tabla,"id_grupo, grupo, tipo","ciclo like '".$_GET["ciclo"]."'");
 }
 
 print "<option value=''>-- SELECCIONE --</option>";
 while ($fila = $consulta -> fetch_assoc())
 {
-    print "<option value='$fila[id_grupo]'>$fila[grupo]</option>";
+    print "<option value='$fila[id_grupo]'>$fila[grupo]$fila[tipo]</option>";
 }
 ?>

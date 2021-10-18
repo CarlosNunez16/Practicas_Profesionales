@@ -686,6 +686,22 @@ WHERE dia = 'Lunes' AND ha = '07:00:00' AND aula.aula = '101'
 
 SELECT ha FROM detalle WHERE dia = 'Lunes' && idAula_FK = 1;
 SELECT * FROM detalle WHERE idAula_FK = 1;
-SELECT * FROM detalle;
 
 DELETE FROM detalle WHERE idAula_FK = 1 && ha = '07:50:00' OR ha = '09:50:00'
+
+SELECT ha FROM detalle WHERE dia = 'Lunes' && idAula_FK = 3 && ha IN (SELECT ha,hf FROM horario WHERE Descuento >= 0.25)
+
+SELECT ha, hf FROM
+(
+	SELECT ha FROM detalle WHERE dia = 'Lunes' && idAula_FK = 3
+	UNION ALL 
+	SELECT ha,hf FROM horario WHERE ha != 1
+)
+SELECT ha FROM detalle WHERE dia = 'Lunes' && idDocente_FK = 1;
+SELECT * FROM grupo
+
+DELETE FROM detalle
+SELECT id_grupo, grupo, tipo FROM grupo WHERE ciclo LIKE 'I' && id_docente NOT IN (SELECT idDocente_FK FROM detalle WHERE dia = 'Lunes' && ha = '07:00:00');
+
+SELECT ha, hf FROM horario WHERE ha NOT IN (SELECT ha FROM detalle WHERE dia = 'Lunes' && (idDocente_FK = 1 OR idGrupo_FK = 28));
+SELECT ha FROM detalle WHERE dia = 'Miércoles' && (idDocente_FK = 2 OR idGrupo_FK = 28)

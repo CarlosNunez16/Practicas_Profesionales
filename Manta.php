@@ -63,7 +63,7 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo';
+                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
                                         $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
 
@@ -84,7 +84,7 @@
                                                         $fila[Materia],
                                                         $fila[CodMateria],
                                                         $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]
+                                                        $fila[Grupo]$fila[Tipo]
                                                     </td>
                                                 ";
                                             }
@@ -108,7 +108,7 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo';
+                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
                                         $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
 
@@ -129,7 +129,7 @@
                                                         $fila[Materia],
                                                         $fila[CodMateria],
                                                         $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]
+                                                        $fila[Grupo]$fila[Tipo]
                                                     </td>
                                                 ";
                                             }
@@ -156,7 +156,7 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo';
+                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
                                         $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
 
@@ -177,7 +177,7 @@
                                                         $fila[Materia],
                                                         $fila[CodMateria],
                                                         $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]
+                                                        $fila[Grupo]$fila[Tipo]
                                                     </td>
                                                 ";
                                             }
@@ -201,7 +201,7 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo';
+                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
                                         $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
 
@@ -222,7 +222,7 @@
                                                         $fila[Materia],
                                                         $fila[CodMateria],
                                                         $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]
+                                                        $fila[Grupo]$fila[Tipo]
                                                     </td>
                                                 ";
                                             }
@@ -249,7 +249,7 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo';
+                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
                                         $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
 
@@ -270,7 +270,7 @@
                                                         $fila[Materia],
                                                         $fila[CodMateria],
                                                         $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]
+                                                        $fila[Grupo]$fila[Tipo]
                                                     </td>
                                                 ";
                                             }
@@ -294,7 +294,7 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo';
+                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
                                         $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
 
@@ -315,7 +315,7 @@
                                                         $fila[Materia],
                                                         $fila[CodMateria],
                                                         $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]
+                                                        $fila[Grupo]$fila[Tipo]
                                                     </td>
                                                 ";
                                             }
@@ -342,7 +342,7 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo';
+                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
                                         $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
 
@@ -363,7 +363,7 @@
                                                         $fila[Materia],
                                                         $fila[CodMateria],
                                                         $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]
+                                                        $fila[Grupo]$fila[Tipo]
                                                     </td>
                                                 ";
                                             }
@@ -387,7 +387,7 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo';
+                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
                                         $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
 
@@ -408,7 +408,7 @@
                                                         $fila[Materia],
                                                         $fila[CodMateria],
                                                         $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]
+                                                        $fila[Grupo]$fila[Tipo]
                                                     </td>
                                                 ";
                                             }
@@ -435,7 +435,7 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo';
+                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
                                         $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
 
@@ -456,7 +456,7 @@
                                                         $fila[Materia],
                                                         $fila[CodMateria],
                                                         $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]
+                                                        $fila[Grupo]$fila[Tipo]
                                                     </td>
                                                 ";
                                             }
@@ -480,7 +480,7 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo';
+                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
                                         $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
 
@@ -501,7 +501,7 @@
                                                         $fila[Materia],
                                                         $fila[CodMateria],
                                                         $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]
+                                                        $fila[Grupo]$fila[Tipo]
                                                     </td>
                                                 ";
                                             }
@@ -528,7 +528,7 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo';
+                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
                                         $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
 
@@ -549,7 +549,7 @@
                                                         $fila[Materia],
                                                         $fila[CodMateria],
                                                         $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]
+                                                        $fila[Grupo]$fila[Tipo]
                                                     </td>
                                                 ";
                                             }
@@ -573,11 +573,10 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo';
+                                        $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
                                         $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
 
-                                        // var_dump($consulta);
 
                                         if(mysqli_num_rows($consulta) < 1)
                                         {
@@ -594,7 +593,7 @@
                                                         $fila[Materia],
                                                         $fila[CodMateria],
                                                         $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]
+                                                        $fila[Grupo]$fila[Tipo]
                                                     </td>
                                                 ";
                                             }
