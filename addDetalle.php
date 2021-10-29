@@ -1,6 +1,7 @@
 <?php
     require_once("Connect.php");
     $objeto = new ClsConnection();
+    date_default_timezone_set("America/El_Salvador");
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -30,10 +31,41 @@
                     <p class="d-inline">Día: <?php echo $_GET["dia"]; ?></p>&nbsp&nbsp|&nbsp&nbsp  
                     <p class="d-inline">Aula: <?php echo $_GET["aula"]; ?></p> 
                 </div>
+                <?php
+                    if(isset($_POST["Guardar"]))
+                    {
+                        if (isset($_POST['bloques']))
+                        {
+                            $n = count($_POST['bloques']);
+                            $bloques = $_POST['bloques'];
+                        }
+                        else
+                        {
+                            $n=0;
+                        }
+
+                        if ($n==0 || $_POST['docente'] == "null" || $_POST['grupos'] == "null" || $_POST['materia'] == "null" || $_POST['ciclo'] == "null")
+                        {
+                            echo "
+                                <svg xmlns='http://www.w3.org/2000/svg' style='display: none;'>
+                                    <symbol id='exclamation-triangle-fill' fill='currentColor' viewBox='0 0 16 16'>
+                                        <path d='M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z'/>
+                                    </symbol>
+                                </svg>
+                            
+                                <div class='alert alert-danger d-flex align-items-center mt-3' role='alert'>
+                                    <svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>
+                                    <div>
+                                        Error: No seleccionó todos los campos.
+                                    </div>
+                                </div>";
+                        }
+                    }
+                ?>
                 <div class="col-md-12">
                     <label for="grupos" class="form-label">Ciclo:</label>
-                    <select class="form-select" name="ciclo" id="ciclo">
-                        <Option value=''>-- SELECCIONE --</Option>
+                    <select class="form-select" name="ciclo" id="ciclo" required>
+                        <Option value='null'>-- SELECCIONE --</Option>
                         <Option value='I'>I</Option>
                         <Option value='II'>II</Option>
                         <Option value='III'>III</Option>
@@ -44,7 +76,7 @@
                 <div class="col-md-12">
                     <label for="materia" class="form-label">Materia:</label>
                     <select class="form-select" name="materia" id="materias">
-                        <option value="">-- SELECCIONE --</option>
+                        <option value="null">-- SELECCIONE --</option>
                     </select>
                 </div>
                 <div class="col-md-12">
@@ -53,7 +85,7 @@
                     <?php
                         $tabla = 'docente';
                         $consulta = $objeto -> SQL_consulta($tabla, "id_docente, nombres_us, apellidos_us");
-                        echo "<option value=''>-- SELECCIONE --</option>";
+                        echo "<option value='null'>-- SELECCIONE --</option>";
                         while ($fila = $consulta -> fetch_assoc())
                         {
                             echo "<Option value='$fila[id_docente]'>$fila[apellidos_us], $fila[nombres_us]</Option>";
@@ -64,11 +96,19 @@
                 <div class="col-md-12">
                     <label for="grupos" class="form-label">Grupo:</label>
                     <select class="form-select" name="grupos" id="grupos">
-                        <option value="">-- SELECCIONE --</option>
+                        <option value="null">-- SELECCIONE --</option>
                     </select>
                 </div>
                 <div class="col-md-12" id="bloques">
 
+                </div>
+                <div class="col-md-12">
+                    <label for="fechaIni" class="form-label">Fecha de inicio:</label>
+                    <input type="date" name="fechaIni" id="fechaIni" required>
+                </div>
+                <div class="col-md-12">
+                    <label for="fechaFin" class="form-label">Fecha de fin:</label>
+                    <input type="date" name="fechaFin" id="fechaFin" required>
                 </div>
                 <script type="text/javascript">
                     $(document).ready(function(){
@@ -92,64 +132,103 @@
                         var ha = urlParams.get('ha');
                         var id_aula = urlParams.get('id_aula');
 
-                        $("#grupos").change(function(){
+                        if ($("#docentes").val() != "")
+                        {
+                            $("#grupos").change(function(){
                             $.get("ajax/bloques.php?dia="+dia+"&ha="+ha+"&id_aula="+id_aula+"&docente="+$("#docentes").val()+"&grupo="+$("#grupos").val()+"", function(data){                                
                                 $("#bloques").html(data);
                                 console.log(data);
                             });
+                            });
+                        }
+                        if ($("#grupos").val() != "")
+                        {
+                            $("#docentes").change(function(){
+                            $.get("ajax/bloques.php?dia="+dia+"&ha="+ha+"&id_aula="+id_aula+"&docente="+$("#docentes").val()+"&grupo="+$("#grupos").val()+"", function(data){                                
+                                $("#bloques").html(data);
+                                console.log(data);
+                            });
+                            });
+                        }
+                        
+                        $("#Guardar").click(function(){
+                            if($("input:checkbox[name='bloques[]']").is(":checked")){
+                                $("input:checkbox[name='bloques[]']").prop('required', false);
+                            }
+                            else
+                            {
+                                $("input:checkbox[name='bloques[]']").prop('required', true);
+                            }
                         });
                     });
                 </script>
                 <div class="col-md-12">
-                    <input class="btn btn-primary" type="submit" name="enviar" value="Guardar">
+                    <input class="btn btn-primary" type="submit" name="Guardar" id="Guardar" value="Guardar">
                 </div>
             </form>
-        </div>
-    </div>
-</body>
-
 <?php
-    if(isset($_POST["enviar"]))
+    if(isset($_POST["Guardar"]))
     {
         if (isset($_POST['bloques']))
         {
             $n = count($_POST['bloques']);
             $bloques = $_POST['bloques'];
         }
+        else
+        {
+            $n=0;
+        }
         $i=0;
 
-        $tabla = 'horario';
-        $consultaHr = $objeto -> SQL_consulta($tabla, "ha,hf");
-        while ($filaHr = $consultaHr -> fetch_assoc())
+        if ($n!=0 && $_POST['docente'] != "null" && $_POST['grupos'] != "null" && $_POST['materia'] != "null" && $_POST['ciclo'] != "null")
         {
-            if ($i<$n)
+            $tabla = 'horario';
+            $consultaHr = $objeto -> SQL_consulta($tabla, "ha,hf");
+            while ($filaHr = $consultaHr -> fetch_assoc())
             {
-                    if($filaHr["ha"] == $bloques[$i])
-                    {
-                        $datos[] = $_POST['docente'];
-                        $datos[] = $_POST['grupos'];
-                        $datos[] = $_POST['materia'];
-                        $datos[] = $_GET['id_aula'];
-                        $datos[] = $filaHr["ha"];
-                        $datos[] = $filaHr["hf"];                
-                        $datos[] = $_POST['ciclo'];
-                        $datos[] = $_GET['dia'];
-                        $datos[] = "tipo";
-                        $datos[] = "1";
-                        $datos[] = "1000-01-01";
-                        $datos[] = "1000-01-01";
-                        $datos[] = "s";
-                        $datos[] = "1000";
+                if ($i<$n)
+                {
+                        if($filaHr["ha"] == $bloques[$i])
+                        {
+                            $datos[] = $_POST['docente'];
+                            $datos[] = $_POST['grupos'];
+                            $datos[] = $_POST['materia'];
+                            $datos[] = $_GET['id_aula'];
+                            $datos[] = $filaHr["ha"];
+                            $datos[] = $filaHr["hf"];                
+                            $datos[] = $_POST['ciclo'];
+                            $datos[] = $_GET['dia'];
 
-                        $campos = array('idDocente_FK','idGrupo_FK', 'idMateria_FK', 'idAula_FK', 'ha', 'hf', 'ciclo', 'dia', 'tipo', 'version', 'fecha_ini', 'fecha_fin', 'comentario_reserva', 'carnet_usuario');
-                        $tabla = "detalle";
-                        $rs = $objeto -> SQL_insert($tabla, $campos, $datos);
-                        $i++;
-                    }
+                            $consultaTipo = $objeto -> SQL_consulta_condicional("grupo", "tipo", "id_grupo = ".$_POST['grupos']."");
+                            $tipo = mysqli_fetch_array($consultaTipo);
+                            
+                            $datos[] = $tipo["tipo"];
+                            $datos[] = "v1";
+
+                            $fecha_ini = str_replace('/', '-', $_POST['fechaIni']);
+                            $fechaIniSql = date('Ymd', strtotime($fecha_ini));
+
+                            $fecha_fin = str_replace('/', '-', $_POST['fechaFin']);
+                            $fechaFinSql = date('Ymd', strtotime($fecha_fin));
+
+                            $datos[] = $fechaIniSql;
+                            $datos[] = $fechaFinSql;
+                            $datos[] = "s";
+                            $datos[] = "1000";
+
+                            $campos = array('idDocente_FK','idGrupo_FK', 'idMateria_FK', 'idAula_FK', 'ha', 'hf', 'ciclo', 'dia', 'tipo', 'version', 'fecha_ini', 'fecha_fin', 'comentario_reserva', 'carnet_usuario');
+                            $tabla = "detalle";
+                            $rs = $objeto -> SQL_insert($tabla, $campos, $datos);
+                            $i++;
+                        }
+                }
+                unset($datos);
             }
-            unset($datos);
+            
+            echo "<script languaje='javascript' type='text/javascript'>window.opener.location.reload(); window.close();</script>";
         }
-        
-        echo "<script languaje='javascript' type='text/javascript'>window.opener.location.reload(); window.close();</script>";
     }
 ?>
+        </div>
+    </div>
+</body>

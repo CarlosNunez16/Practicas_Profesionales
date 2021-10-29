@@ -12,7 +12,7 @@
         $consulta = $objeto -> SQL_consulta_condicional($tabla,"id_materia, materia","ciclo_materia like '".$_GET["ciclo"]."'");
     }
 
-    print "<option value=''>-- SELECCIONE --</option>";
+    print "<option value='null'>-- SELECCIONE --</option>";
     while ($fila = $consulta -> fetch_assoc())
     {
         print "<option value='$fila[id_materia]'>$fila[materia]</option>";
