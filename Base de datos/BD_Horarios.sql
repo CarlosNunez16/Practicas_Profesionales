@@ -680,30 +680,7 @@ INSERT  INTO docente(id_docente,carnet,nombres_us,apellidos_us,tipo,tel_casa,cel
 INSERT  INTO detalle(idDocente_FK,idGrupo_FK,idMateria_FK,idAula_FK,ha,hf,ciclo,dia,tipo,`version`,fecha_ini,fecha_fin,comentario_reserva,carnet_usuario) VALUES 
 (1,27,11,9,'07:00:00','07:50:00','I', 'Lunes', 'tipo', '1','1000-01-01','1000-01-01','s', '1000');
 
-SELECT materia.materia, materia.codigo_materia, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo 
-FROM detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)
-WHERE dia = 'Lunes' AND ha = '07:00:00' AND aula.aula = '101'
 
-SELECT ha FROM detalle WHERE dia = 'Lunes' && idAula_FK = 1;
-SELECT * FROM detalle WHERE idAula_FK = 1;
-
-DELETE FROM detalle WHERE idAula_FK = 1 && ha = '07:50:00' OR ha = '09:50:00'
-
-SELECT ha FROM detalle WHERE dia = 'Lunes' && idAula_FK = 3 && ha IN (SELECT ha,hf FROM horario WHERE Descuento >= 0.25)
-
-SELECT ha, hf FROM
-(
-	SELECT ha FROM detalle WHERE dia = 'Lunes' && idAula_FK = 3
-	UNION ALL 
-	SELECT ha,hf FROM horario WHERE ha != 1
-)
-SELECT ha FROM detalle WHERE dia = 'Lunes' && idDocente_FK = 1;
-SELECT * FROM detalle
+SELECT * FROM detalle WHERE YEAR = 0
 
 
-SELECT id_grupo, grupo, tipo FROM grupo WHERE ciclo LIKE 'I' && id_docente NOT IN (SELECT idDocente_FK FROM detalle WHERE dia = 'Lunes' && ha = '07:00:00');
-
-SELECT ha, hf FROM horario WHERE ha IN (SELECT ha FROM detalle WHERE dia = 'Lunes' && (idDocente_FK = 1 OR idGrupo_FK = 29));
-SELECT ha FROM detalle WHERE dia = 'Miércoles' && (idDocente_FK = 2 OR idGrupo_FK = 28)
-
-SELECT ha, hf FROM horario WHERE ha IN (SELECT ha FROM detalle WHERE dia = 'Lunes' && idDocente_FK = 2);

@@ -4,7 +4,7 @@ $objeto = new ClsConnection();
 
 
 $tabla = 'horario';
-$consulta = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha IN (SELECT ha FROM detalle WHERE dia = '".$_GET["dia"]."' && idDocente_FK = ".$_GET["docente"].")");
+$consulta = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha IN (SELECT ha FROM detalle WHERE dia = '".$_GET["dia"]."' && idDocente_FK = ".$_GET["docente"]." && YEAR='".$_GET["year"]."')");
 print "<h4>Bloques ocupados del docente seleccionado:</h4>";
 print "<div class='alert alert-primary' role='alert'>";
 if(mysqli_num_rows($consulta) < 1)
@@ -22,7 +22,7 @@ else
 print "</div>";
 
 $tabla = 'horario';
-$consulta = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha IN (SELECT ha FROM detalle WHERE dia = '".$_GET["dia"]."' &&  idGrupo_FK = ".$_GET["grupo"].")");
+$consulta = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha IN (SELECT ha FROM detalle WHERE dia = '".$_GET["dia"]."' &&  idGrupo_FK = ".$_GET["grupo"]." && YEAR='".$_GET["year"]."')");
 print "<h4>Bloques ocupados del grupo seleccionado:</h4>";
 print "<div class='alert alert-primary' role='alert'>";
 if(mysqli_num_rows($consulta) < 1)
@@ -43,12 +43,12 @@ print "</div>";
 print "<label for='bloques' class='form-label' style='color:#8B0000'>Selecciona los bloques disponibles:</label>";               
 
     $tabla = 'detalle';
-    $consulta = $objeto -> SQL_consulta_condicional($tabla, "ha", "dia = '".$_GET["dia"]."' && idAula_FK = ".$_GET["id_aula"]."");
+    $consulta = $objeto -> SQL_consulta_condicional($tabla, "ha", "dia = '".$_GET["dia"]."' && idAula_FK = ".$_GET["id_aula"]."  && YEAR='".$_GET["year"]."'");
         
     if(mysqli_num_rows($consulta) < 1)
     {
             $tabla = 'horario';
-            $consultaHr = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha NOT IN (SELECT ha FROM detalle WHERE dia = '".$_GET["dia"]."' && (idDocente_FK = ".$_GET["docente"]." or idGrupo_FK = ".$_GET["grupo"]."))");
+            $consultaHr = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha NOT IN (SELECT ha FROM detalle WHERE YEAR='".$_GET["year"]."' && dia = '".$_GET["dia"]."' && (idDocente_FK = ".$_GET["docente"]." or idGrupo_FK = ".$_GET["grupo"]."))");
             while ($filaHr = $consultaHr -> fetch_assoc())
             {
                 print"<div class='form-check text-start'>";
@@ -67,7 +67,7 @@ print "<label for='bloques' class='form-label' style='color:#8B0000'>Selecciona 
     else
     {
             $tabla = 'horario';
-            $consultaHr = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha NOT IN (SELECT ha FROM detalle WHERE dia = '".$_GET["dia"]."' && (idDocente_FK = ".$_GET["docente"]." or idGrupo_FK = ".$_GET["grupo"]."))");
+            $consultaHr = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha NOT IN (SELECT ha FROM detalle WHERE YEAR='".$_GET["year"]."' && dia = '".$_GET["dia"]."' && (idDocente_FK = ".$_GET["docente"]." or idGrupo_FK = ".$_GET["grupo"]."))");
             while ($filaHr = $consultaHr -> fetch_assoc())
             {
                 print"<div class='form-check text-start'>";

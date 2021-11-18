@@ -1,3 +1,8 @@
+<?php
+    @session_start();
+    $_SESSION["year"] = 2021;
+?>
+
 <div class="row d-flex justify-content-center">
 	<div class="col-3 m-3 s-1 p-3 border border-dark rounded-3 d-block" style="background-color:#F5F5F5">
         <h1 class="text-center fs-4">Día Seleccionado: <?php echo $_GET["dia"]; ?></h1>
@@ -65,14 +70,14 @@
                                     {
                                         $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         
 
                                         if(mysqli_num_rows($consulta) < 1)
                                         {
                                             ?>
-                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
+                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>&year=<?php echo $_SESSION["year"];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
                                             <?php
                                         }
                                         else
@@ -81,10 +86,20 @@
 									        {
                                                 echo "
                                                     <td>
-                                                        $fila[Materia],
-                                                        $fila[CodMateria],
-                                                        $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]$fila[Tipo]
+                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 ";
                                             }
@@ -110,14 +125,13 @@
                                     {
                                         $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
-                                        // var_dump($consulta);
 
                                         if(mysqli_num_rows($consulta) < 1)
                                         {
                                             ?>
-                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
+                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>&year=<?php echo $_SESSION["year"];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
                                             <?php
                                         }
                                         else
@@ -126,10 +140,20 @@
 									        {
                                                 echo "
                                                     <td>
-                                                        $fila[Materia],
-                                                        $fila[CodMateria],
-                                                        $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]$fila[Tipo]
+                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 ";
                                             }
@@ -158,14 +182,13 @@
                                     {
                                         $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
-                                        // var_dump($consulta);
 
                                         if(mysqli_num_rows($consulta) < 1)
                                         {
                                             ?>
-                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
+                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>&year=<?php echo $_SESSION["year"];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
                                             <?php
                                         }
                                         else
@@ -174,10 +197,20 @@
 									        {
                                                 echo "
                                                     <td>
-                                                        $fila[Materia],
-                                                        $fila[CodMateria],
-                                                        $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]$fila[Tipo]
+                                                        <table style='text-align:center' class='border border-dark table table-bordered table-hover table-sm'>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Materia]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-primary border border-dark'><p class='fs-6'>$fila[CodMateria]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[NombresUS] $fila[ApellidosUS]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Grupo]$fila[Tipo]</p></td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 ";
                                             }
@@ -203,14 +236,12 @@
                                     {
                                         $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
-
-                                        // var_dump($consulta);
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         if(mysqli_num_rows($consulta) < 1)
                                         {
                                             ?>
-                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
+                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>&year=<?php echo $_SESSION["year"];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
                                             <?php
                                         }
                                         else
@@ -219,10 +250,20 @@
 									        {
                                                 echo "
                                                     <td>
-                                                        $fila[Materia],
-                                                        $fila[CodMateria],
-                                                        $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]$fila[Tipo]
+                                                        <table style='text-align:center' class='border border-dark table table-bordered table-hover table-sm'>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Materia]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-primary border border-dark'><p class='fs-6'>$fila[CodMateria]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[NombresUS] $fila[ApellidosUS]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Grupo]$fila[Tipo]</p></td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 ";
                                             }
@@ -251,14 +292,12 @@
                                     {
                                         $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
-
-                                        // var_dump($consulta);
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         if(mysqli_num_rows($consulta) < 1)
                                         {
                                             ?>
-                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
+                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>&year=<?php echo $_SESSION["year"];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
                                             <?php
                                         }
                                         else
@@ -267,10 +306,20 @@
 									        {
                                                 echo "
                                                     <td>
-                                                        $fila[Materia],
-                                                        $fila[CodMateria],
-                                                        $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]$fila[Tipo]
+                                                        <table style='text-align:center' class='border border-dark table table-bordered table-hover table-sm'>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Materia]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-primary border border-dark'><p class='fs-6'>$fila[CodMateria]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[NombresUS] $fila[ApellidosUS]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Grupo]$fila[Tipo]</p></td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 ";
                                             }
@@ -296,14 +345,12 @@
                                     {
                                         $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
-
-                                        // var_dump($consulta);
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         if(mysqli_num_rows($consulta) < 1)
                                         {
                                             ?>
-                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
+                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>&year=<?php echo $_SESSION["year"];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
                                             <?php
                                         }
                                         else
@@ -312,10 +359,20 @@
 									        {
                                                 echo "
                                                     <td>
-                                                        $fila[Materia],
-                                                        $fila[CodMateria],
-                                                        $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]$fila[Tipo]
+                                                        <table style='text-align:center' class='border border-dark table table-bordered table-hover table-sm'>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Materia]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-primary border border-dark'><p class='fs-6'>$fila[CodMateria]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[NombresUS] $fila[ApellidosUS]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Grupo]$fila[Tipo]</p></td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 ";
                                             }
@@ -344,14 +401,12 @@
                                     {
                                         $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
-
-                                        // var_dump($consulta);
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         if(mysqli_num_rows($consulta) < 1)
                                         {
                                             ?>
-                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
+                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>&year=<?php echo $_SESSION["year"];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
                                             <?php
                                         }
                                         else
@@ -360,10 +415,20 @@
 									        {
                                                 echo "
                                                     <td>
-                                                        $fila[Materia],
-                                                        $fila[CodMateria],
-                                                        $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]$fila[Tipo]
+                                                        <table style='text-align:center' class='border border-dark table table-bordered table-hover table-sm'>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Materia]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-primary border border-dark'><p class='fs-6'>$fila[CodMateria]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[NombresUS] $fila[ApellidosUS]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Grupo]$fila[Tipo]</p></td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 ";
                                             }
@@ -389,14 +454,12 @@
                                     {
                                         $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
-
-                                        // var_dump($consulta);
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         if(mysqli_num_rows($consulta) < 1)
                                         {
                                             ?>
-                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
+                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>&year=<?php echo $_SESSION["year"];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
                                             <?php
                                         }
                                         else
@@ -405,10 +468,20 @@
 									        {
                                                 echo "
                                                     <td>
-                                                        $fila[Materia],
-                                                        $fila[CodMateria],
-                                                        $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]$fila[Tipo]
+                                                        <table style='text-align:center' class='border border-dark table table-bordered table-hover table-sm'>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Materia]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-primary border border-dark'><p class='fs-6'>$fila[CodMateria]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[NombresUS] $fila[ApellidosUS]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Grupo]$fila[Tipo]</p></td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 ";
                                             }
@@ -437,14 +510,12 @@
                                     {
                                         $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
-
-                                        // var_dump($consulta);
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         if(mysqli_num_rows($consulta) < 1)
                                         {
                                             ?>
-                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
+                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>&year=<?php echo $_SESSION["year"];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
                                             <?php
                                         }
                                         else
@@ -453,10 +524,20 @@
 									        {
                                                 echo "
                                                     <td>
-                                                        $fila[Materia],
-                                                        $fila[CodMateria],
-                                                        $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]$fila[Tipo]
+                                                        <table style='text-align:center' class='border border-dark table table-bordered table-hover table-sm'>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Materia]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-primary border border-dark'><p class='fs-6'>$fila[CodMateria]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[NombresUS] $fila[ApellidosUS]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Grupo]$fila[Tipo]</p></td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 ";
                                             }
@@ -482,14 +563,12 @@
                                     {
                                         $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
-
-                                        // var_dump($consulta);
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         if(mysqli_num_rows($consulta) < 1)
                                         {
                                             ?>
-                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
+                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>&year=<?php echo $_SESSION["year"];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
                                             <?php
                                         }
                                         else
@@ -498,10 +577,20 @@
 									        {
                                                 echo "
                                                     <td>
-                                                        $fila[Materia],
-                                                        $fila[CodMateria],
-                                                        $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]$fila[Tipo]
+                                                        <table style='text-align:center' class='border border-dark table table-bordered table-hover table-sm'>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Materia]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-primary border border-dark'><p class='fs-6'>$fila[CodMateria]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[NombresUS] $fila[ApellidosUS]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Grupo]$fila[Tipo]</p></td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 ";
                                             }
@@ -530,14 +619,12 @@
                                     {
                                         $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
-
-                                        // var_dump($consulta);
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         if(mysqli_num_rows($consulta) < 1)
                                         {
                                             ?>
-                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
+                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>&year=<?php echo $_SESSION["year"];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
                                             <?php
                                         }
                                         else
@@ -546,10 +633,20 @@
 									        {
                                                 echo "
                                                     <td>
-                                                        $fila[Materia],
-                                                        $fila[CodMateria],
-                                                        $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]$fila[Tipo]
+                                                        <table style='text-align:center' class='border border-dark table table-bordered table-hover table-sm'>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Materia]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-primary border border-dark'><p class='fs-6'>$fila[CodMateria]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[NombresUS] $fila[ApellidosUS]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Grupo]$fila[Tipo]</p></td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 ";
                                             }
@@ -575,13 +672,13 @@
                                     {
                                         $campos = 'materia.materia as Materia, materia.codigo_materia as CodMateria, docente.nombres_us AS NombresUS, docente.apellidos_us AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.idMateria_FK=materia.id_materia) INNER JOIN docente ON (detalle.idDocente_FK=docente.id_docente) INNER JOIN grupo ON (detalle.idGrupo_FK=grupo.id_grupo) INNER JOIN aula ON (detalle.idAula_FK=aula.id_aula)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula.aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
 
                                         if(mysqli_num_rows($consulta) < 1)
                                         {
                                             ?>
-                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
+                                            <td><a href="javascript:window.open('addDetalle.php?dia=<?php echo $_GET["dia"];?>&ha=<?php echo $ha;?>&aula=<?php echo $arrayAula[$i];?>&id_aula=<?php echo $arrayIdAula[$i];?>&year=<?php echo $_SESSION["year"];?>','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a></td>
                                             <?php
                                         }
                                         else
@@ -590,10 +687,20 @@
 									        {
                                                 echo "
                                                     <td>
-                                                        $fila[Materia],
-                                                        $fila[CodMateria],
-                                                        $fila[NombresUS] $fila[ApellidosUS],
-                                                        $fila[Grupo]$fila[Tipo]
+                                                        <table style='text-align:center' class='border border-dark table table-bordered table-hover table-sm'>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Materia]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-primary border border-dark'><p class='fs-6'>$fila[CodMateria]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[NombresUS] $fila[ApellidosUS]</p></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class='table-light border border-dark'><p class='fs-6'>$fila[Grupo]$fila[Tipo]</p></td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 ";
                                             }

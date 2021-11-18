@@ -9,7 +9,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type='text/javascript' src='Hora.js'></script>
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
@@ -112,6 +111,7 @@
                 </div>
                 <script type="text/javascript">
                     $(document).ready(function(){
+
                         $("#ciclo").change(function(){
                             $.get("ajax/Grupos.php","ciclo="+$("#ciclo").val(), function(data){
                                 $("#grupos").html(data);
@@ -131,11 +131,12 @@
                         var dia = urlParams.get('dia');
                         var ha = urlParams.get('ha');
                         var id_aula = urlParams.get('id_aula');
+                        var year = urlParams.get('year');
 
                         if ($("#docentes").val() != "")
                         {
                             $("#grupos").change(function(){
-                            $.get("ajax/bloques.php?dia="+dia+"&ha="+ha+"&id_aula="+id_aula+"&docente="+$("#docentes").val()+"&grupo="+$("#grupos").val()+"", function(data){                                
+                            $.get("ajax/bloques.php?dia="+dia+"&ha="+ha+"&id_aula="+id_aula+"&docente="+$("#docentes").val()+"&grupo="+$("#grupos").val()+"&year="+year+"", function(data){                                
                                 $("#bloques").html(data);
                                 console.log(data);
                             });
@@ -144,7 +145,7 @@
                         if ($("#grupos").val() != "")
                         {
                             $("#docentes").change(function(){
-                            $.get("ajax/bloques.php?dia="+dia+"&ha="+ha+"&id_aula="+id_aula+"&docente="+$("#docentes").val()+"&grupo="+$("#grupos").val()+"", function(data){                                
+                            $.get("ajax/bloques.php?dia="+dia+"&ha="+ha+"&id_aula="+id_aula+"&docente="+$("#docentes").val()+"&grupo="+$("#grupos").val()+"&year="+year+"", function(data){                                
                                 $("#bloques").html(data);
                                 console.log(data);
                             });
@@ -197,6 +198,7 @@
                             $datos[] = $filaHr["ha"];
                             $datos[] = $filaHr["hf"];                
                             $datos[] = $_POST['ciclo'];
+                            $datos[] = $_GET['year'];
                             $datos[] = $_GET['dia'];
 
                             $consultaTipo = $objeto -> SQL_consulta_condicional("grupo", "tipo", "id_grupo = ".$_POST['grupos']."");
@@ -216,7 +218,7 @@
                             $datos[] = "s";
                             $datos[] = "1000";
 
-                            $campos = array('idDocente_FK','idGrupo_FK', 'idMateria_FK', 'idAula_FK', 'ha', 'hf', 'ciclo', 'dia', 'tipo', 'version', 'fecha_ini', 'fecha_fin', 'comentario_reserva', 'carnet_usuario');
+                            $campos = array('idDocente_FK','idGrupo_FK', 'idMateria_FK', 'idAula_FK', 'ha', 'hf', 'ciclo', 'YEAR', 'dia', 'tipo', 'version', 'fecha_ini', 'fecha_fin', 'comentario_reserva', 'carnet_usuario');
                             $tabla = "detalle";
                             $rs = $objeto -> SQL_insert($tabla, $campos, $datos);
                             $i++;
