@@ -43,12 +43,12 @@ print "</div>";
 print "<label for='bloques' class='form-label' style='color:#8B0000'>Selecciona los bloques disponibles:</label>";               
 
     $tabla = 'detalle';
-    $consulta = $objeto -> SQL_consulta_condicional($tabla, "ha", "dia = '".$_GET["dia"]."' && aula = ".$_GET["id_aula"]."  && YEAR='".$_GET["year"]."'");
+    $consulta = $objeto -> SQL_consulta_condicional($tabla, "ha", "dia = '".$_GET["dia"]."' && aula = '".$_GET["id_aula"]."'  && YEAR='".$_GET["year"]."'");
         
     if(mysqli_num_rows($consulta) < 1)
     {
             $tabla = 'horario';
-            $consultaHr = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha NOT IN (SELECT ha FROM detalle WHERE YEAR='".$_GET["year"]."' && dia = '".$_GET["dia"]."' && (id_d = ".$_GET["docente"]." or id_g = ".$_GET["grupo"]."))");
+            $consultaHr = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha NOT IN (SELECT ha FROM detalle WHERE YEAR='".$_GET["year"]."' && dia = '".$_GET["dia"]."' && (id_d = ".$_GET["docente"]." or id_g = ".$_GET["grupo"].")) && ha NOT IN (select ha FROM detalle WHERE YEAR='".$_GET["year"]."' && dia = '".$_GET["dia"]."' && aula = '".$_GET["id_aula"]."')");
             while ($filaHr = $consultaHr -> fetch_assoc())
             {
                 print"<div class='form-check text-start'>";
@@ -67,7 +67,7 @@ print "<label for='bloques' class='form-label' style='color:#8B0000'>Selecciona 
     else
     {
             $tabla = 'horario';
-            $consultaHr = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha NOT IN (SELECT ha FROM detalle WHERE YEAR='".$_GET["year"]."' && dia = '".$_GET["dia"]."' && (id_d = ".$_GET["docente"]." or id_g = ".$_GET["grupo"]."))");
+            $consultaHr = $objeto -> SQL_consulta_condicional($tabla, "ha,hf", "ha NOT IN (SELECT ha FROM detalle WHERE YEAR='".$_GET["year"]."' && dia = '".$_GET["dia"]."' && (id_d = ".$_GET["docente"]." or id_g = ".$_GET["grupo"].")) && ha NOT IN (select ha FROM detalle WHERE YEAR='".$_GET["year"]."' && dia = '".$_GET["dia"]."' && aula = '".$_GET["id_aula"]."')");
             while ($filaHr = $consultaHr -> fetch_assoc())
             {
                 print"<div class='form-check text-start'>";

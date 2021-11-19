@@ -130,7 +130,7 @@
                         const urlParams = new URLSearchParams(valores);
                         var dia = urlParams.get('dia');
                         var ha = urlParams.get('ha');
-                        var id_aula = urlParams.get('id_aula');
+                        var id_aula = urlParams.get('aula');
                         var year = urlParams.get('year');
 
                         if ($("#docentes").val() != "")
@@ -220,7 +220,15 @@
                             $datos[] = "";
                             $datos[] = "1000";
 
-                            $campos = array('id_d','id_g', 'id_m', 'aula', 'ha', 'hf', 'ciclo', 'YEAR', 'dia', 'grupo', 'tipo', 'horas', 'version', 'fechaini', 'fechafin', 'comentarioreserva', 'carnetusuario');
+                            $cod_alldetalle="";
+
+                            for($j=0; $j<17; $j++)
+                            {
+                                $cod_alldetalle .= $datos[$j];
+                            }
+                            $datos[] = $cod_alldetalle;
+
+                            $campos = array('id_d','id_g', 'id_m', 'aula', 'ha', 'hf', 'ciclo', 'YEAR', 'dia', 'grupo', 'tipo', 'horas', 'version', 'fechaini', 'fechafin', 'comentarioreserva', 'carnetusuario', 'cod_alldetalle');
                             $tabla = "detalle";
                             $rs = $objeto -> SQL_insert($tabla, $campos, $datos);
                             $i++;
