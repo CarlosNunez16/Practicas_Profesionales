@@ -24,6 +24,8 @@
     </div>
 </div>
 
+<a href="javascript:window.open('addDetalle.php?dia=Lunes&ha=07:00:00&aula=101&year=2018','','width=600,height=400,left=400,top=200,toolbar=yes');void 0"><p class='fs-6'>Agregar Horario</p></a>
+
 <?php
     if ($_GET["dia"] == "Ninguno")
     {

@@ -83,11 +83,11 @@
                     <select class="form-select" name="docente" id="docentes">
                     <?php
                         $tabla = 'docente';
-                        $consulta = $objeto -> SQL_consulta($tabla, "id_docente, nombres_us, apellidos_us");
+                        $consulta = $objeto -> SQL_consulta($tabla, "id_docente, nom_usuario, ape_usuario");
                         echo "<option value='null'>-- SELECCIONE --</option>";
                         while ($fila = $consulta -> fetch_assoc())
                         {
-                            echo "<Option value='$fila[id_docente]'>$fila[apellidos_us], $fila[nombres_us]</Option>";
+                            echo "<Option value='$fila[id_docente]'>$fila[nom_usuario], $fila[ape_usuario]</Option>";
                         }
                     ?>
                     </select>
@@ -194,7 +194,7 @@
                             $datos[] = $_POST['docente'];
                             $datos[] = $_POST['grupos'];
                             $datos[] = $_POST['materia'];
-                            $datos[] = $_GET['id_aula'];
+                            $datos[] = $_GET['aula'];
                             $datos[] = $filaHr["ha"];
                             $datos[] = $filaHr["hf"];                
                             $datos[] = $_POST['ciclo'];
@@ -203,8 +203,10 @@
 
                             $consultaTipo = $objeto -> SQL_consulta_condicional("grupo", "tipo", "id_grupo = ".$_POST['grupos']."");
                             $tipo = mysqli_fetch_array($consultaTipo);
-                            
+
+                            $datos[] = $tipo["tipo"]; 
                             $datos[] = $tipo["tipo"];
+                            $datos[] = "";
                             $datos[] = "v1";
 
                             $fecha_ini = str_replace('/', '-', $_POST['fechaIni']);
@@ -215,10 +217,10 @@
 
                             $datos[] = $fechaIniSql;
                             $datos[] = $fechaFinSql;
-                            $datos[] = "s";
+                            $datos[] = "";
                             $datos[] = "1000";
 
-                            $campos = array('idDocente_FK','idGrupo_FK', 'idMateria_FK', 'idAula_FK', 'ha', 'hf', 'ciclo', 'YEAR', 'dia', 'tipo', 'version', 'fecha_ini', 'fecha_fin', 'comentario_reserva', 'carnet_usuario');
+                            $campos = array('id_d','id_g', 'id_m', 'aula', 'ha', 'hf', 'ciclo', 'YEAR', 'dia', 'grupo', 'tipo', 'horas', 'version', 'fechaini', 'fechafin', 'comentarioreserva', 'carnetusuario');
                             $tabla = "detalle";
                             $rs = $objeto -> SQL_insert($tabla, $campos, $datos);
                             $i++;
