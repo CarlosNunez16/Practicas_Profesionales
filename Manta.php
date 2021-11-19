@@ -66,9 +66,9 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
+                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo, cod_alldetalle';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.id_m=materia.id_materia) INNER JOIN docente ON (detalle.id_d=docente.id_docente) INNER JOIN grupo ON (detalle.id_g=grupo.id_grupo)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && detalle.ciclo='I'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         
 
@@ -80,26 +80,77 @@
                                         }
                                         else
                                         {
+                                            $consultaUnir = $objeto -> SQL_consulta_condicional("detalle", "cod_alldetalle","dia = '".$_GET["dia"]."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && ha = '07:50:00'");
+                                            $cod_alldetalle2=$consultaUnir->fetch_assoc();
+
                                             while ($fila = $consulta -> fetch_assoc())
 									        {
-                                                echo "
-                                                    <td>
-                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                ";
+                                                if(mysqli_num_rows($consultaUnir) > 0)
+                                                {
+                                                    if ($cod_alldetalle2["cod_alldetalle"]==$fila["cod_alldetalle"])
+                                                    {
+                                                        echo "
+                                                        <td rowspan='2'>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        ";
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "
+                                                            <td>
+                                                                <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        ";
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    echo "
+                                                        <td>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        ";
+                                                }
                                             }
                                         }
                                         $n++;
@@ -119,9 +170,9 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
+                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo, cod_alldetalle';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.id_m=materia.id_materia) INNER JOIN docente ON (detalle.id_d=docente.id_docente) INNER JOIN grupo ON (detalle.id_g=grupo.id_grupo)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && detalle.ciclo='I'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         
 
@@ -133,26 +184,60 @@
                                         }
                                         else
                                         {
+                                            $consultaUnir = $objeto -> SQL_consulta_condicional("detalle", "cod_alldetalle","dia = '".$_GET["dia"]."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && ha = '07:00:00'");
+                                            $cod_alldetalle2=$consultaUnir->fetch_assoc();
+
                                             while ($fila = $consulta -> fetch_assoc())
 									        {
-                                                echo "
-                                                    <td>
-                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                ";
+                                                if(mysqli_num_rows($consultaUnir) > 0)
+                                                {
+                                                    if ($cod_alldetalle2["cod_alldetalle"]==$fila["cod_alldetalle"])
+                                                    {
+
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "
+                                                            <td>
+                                                                <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        ";
+                                                    }
+                                                }
+                                                else 
+                                                {
+                                                    echo "
+                                                        <td>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    ";
+                                                }
                                             }
                                         }
                                         $n++;
@@ -175,9 +260,9 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
+                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo, cod_alldetalle';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.id_m=materia.id_materia) INNER JOIN docente ON (detalle.id_d=docente.id_docente) INNER JOIN grupo ON (detalle.id_g=grupo.id_grupo)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && detalle.ciclo='I'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         
 
@@ -189,26 +274,77 @@
                                         }
                                         else
                                         {
+                                            $consultaUnir = $objeto -> SQL_consulta_condicional("detalle", "cod_alldetalle","dia = '".$_GET["dia"]."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && ha = '09:50:00'");
+                                            $cod_alldetalle2=$consultaUnir->fetch_assoc();
+
                                             while ($fila = $consulta -> fetch_assoc())
 									        {
-                                                echo "
-                                                    <td>
-                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                ";
+                                                if(mysqli_num_rows($consultaUnir) > 0)
+                                                {
+                                                    if ($cod_alldetalle2["cod_alldetalle"]==$fila["cod_alldetalle"])
+                                                    {
+                                                        echo "
+                                                        <td rowspan='2'>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        ";
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "
+                                                            <td>
+                                                                <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        ";
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    echo "
+                                                        <td>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        ";
+                                                }
                                             }
                                         }
                                         $n++;
@@ -228,9 +364,9 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
+                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo, cod_alldetalle';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.id_m=materia.id_materia) INNER JOIN docente ON (detalle.id_d=docente.id_docente) INNER JOIN grupo ON (detalle.id_g=grupo.id_grupo)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && detalle.ciclo='I'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         
 
@@ -242,26 +378,60 @@
                                         }
                                         else
                                         {
+                                            $consultaUnir = $objeto -> SQL_consulta_condicional("detalle", "cod_alldetalle","dia = '".$_GET["dia"]."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && ha = '09:00:00'");
+                                            $cod_alldetalle2=$consultaUnir->fetch_assoc();
+
                                             while ($fila = $consulta -> fetch_assoc())
 									        {
-                                                echo "
-                                                    <td>
-                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                ";
+                                                if(mysqli_num_rows($consultaUnir) > 0)
+                                                {
+                                                    if ($cod_alldetalle2["cod_alldetalle"]==$fila["cod_alldetalle"])
+                                                    {
+
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "
+                                                            <td>
+                                                                <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        ";
+                                                    }
+                                                }
+                                                else 
+                                                {
+                                                    echo "
+                                                        <td>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    ";
+                                                }
                                             }
                                         }
                                         $n++;
@@ -284,9 +454,9 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
+                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo, cod_alldetalle';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.id_m=materia.id_materia) INNER JOIN docente ON (detalle.id_d=docente.id_docente) INNER JOIN grupo ON (detalle.id_g=grupo.id_grupo)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && detalle.ciclo='I'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         
 
@@ -298,26 +468,77 @@
                                         }
                                         else
                                         {
+                                            $consultaUnir = $objeto -> SQL_consulta_condicional("detalle", "cod_alldetalle","dia = '".$_GET["dia"]."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && ha = '11:30:00'");
+                                            $cod_alldetalle2=$consultaUnir->fetch_assoc();
+
                                             while ($fila = $consulta -> fetch_assoc())
 									        {
-                                                echo "
-                                                    <td>
-                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                ";
+                                                if(mysqli_num_rows($consultaUnir) > 0)
+                                                {
+                                                    if ($cod_alldetalle2["cod_alldetalle"]==$fila["cod_alldetalle"])
+                                                    {
+                                                        echo "
+                                                        <td rowspan='2'>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        ";
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "
+                                                            <td>
+                                                                <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        ";
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    echo "
+                                                        <td>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        ";
+                                                }
                                             }
                                         }
                                         $n++;
@@ -337,9 +558,9 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
+                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo, cod_alldetalle';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.id_m=materia.id_materia) INNER JOIN docente ON (detalle.id_d=docente.id_docente) INNER JOIN grupo ON (detalle.id_g=grupo.id_grupo)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && detalle.ciclo='I'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         
 
@@ -351,26 +572,60 @@
                                         }
                                         else
                                         {
+                                            $consultaUnir = $objeto -> SQL_consulta_condicional("detalle", "cod_alldetalle","dia = '".$_GET["dia"]."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && ha = '10:40:00'");
+                                            $cod_alldetalle2=$consultaUnir->fetch_assoc();
+
                                             while ($fila = $consulta -> fetch_assoc())
 									        {
-                                                echo "
-                                                    <td>
-                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                ";
+                                                if(mysqli_num_rows($consultaUnir) > 0)
+                                                {
+                                                    if ($cod_alldetalle2["cod_alldetalle"]==$fila["cod_alldetalle"])
+                                                    {
+
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "
+                                                            <td>
+                                                                <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        ";
+                                                    }
+                                                }
+                                                else 
+                                                {
+                                                    echo "
+                                                        <td>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    ";
+                                                }
                                             }
                                         }
                                         $n++;
@@ -393,9 +648,9 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
+                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo, cod_alldetalle';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.id_m=materia.id_materia) INNER JOIN docente ON (detalle.id_d=docente.id_docente) INNER JOIN grupo ON (detalle.id_g=grupo.id_grupo)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && detalle.ciclo='I'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         
 
@@ -407,26 +662,77 @@
                                         }
                                         else
                                         {
+                                            $consultaUnir = $objeto -> SQL_consulta_condicional("detalle", "cod_alldetalle","dia = '".$_GET["dia"]."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && ha = '13:50:00'");
+                                            $cod_alldetalle2=$consultaUnir->fetch_assoc();
+
                                             while ($fila = $consulta -> fetch_assoc())
 									        {
-                                                echo "
-                                                    <td>
-                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                ";
+                                                if(mysqli_num_rows($consultaUnir) > 0)
+                                                {
+                                                    if ($cod_alldetalle2["cod_alldetalle"]==$fila["cod_alldetalle"])
+                                                    {
+                                                        echo "
+                                                        <td rowspan='2'>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        ";
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "
+                                                            <td>
+                                                                <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        ";
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    echo "
+                                                        <td>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        ";
+                                                }
                                             }
                                         }
                                         $n++;
@@ -446,9 +752,9 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
+                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo, cod_alldetalle';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.id_m=materia.id_materia) INNER JOIN docente ON (detalle.id_d=docente.id_docente) INNER JOIN grupo ON (detalle.id_g=grupo.id_grupo)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && detalle.ciclo='I'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         
 
@@ -460,26 +766,60 @@
                                         }
                                         else
                                         {
+                                            $consultaUnir = $objeto -> SQL_consulta_condicional("detalle", "cod_alldetalle","dia = '".$_GET["dia"]."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && ha = '13:00:00'");
+                                            $cod_alldetalle2=$consultaUnir->fetch_assoc();
+
                                             while ($fila = $consulta -> fetch_assoc())
 									        {
-                                                echo "
-                                                    <td>
-                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                ";
+                                                if(mysqli_num_rows($consultaUnir) > 0)
+                                                {
+                                                    if ($cod_alldetalle2["cod_alldetalle"]==$fila["cod_alldetalle"])
+                                                    {
+
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "
+                                                            <td>
+                                                                <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        ";
+                                                    }
+                                                }
+                                                else 
+                                                {
+                                                    echo "
+                                                        <td>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    ";
+                                                }
                                             }
                                         }
                                         $n++;
@@ -502,9 +842,9 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
+                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo, cod_alldetalle';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.id_m=materia.id_materia) INNER JOIN docente ON (detalle.id_d=docente.id_docente) INNER JOIN grupo ON (detalle.id_g=grupo.id_grupo)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && detalle.ciclo='I'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         
 
@@ -516,26 +856,77 @@
                                         }
                                         else
                                         {
+                                            $consultaUnir = $objeto -> SQL_consulta_condicional("detalle", "cod_alldetalle","dia = '".$_GET["dia"]."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && ha = '15:30:00'");
+                                            $cod_alldetalle2=$consultaUnir->fetch_assoc();
+
                                             while ($fila = $consulta -> fetch_assoc())
 									        {
-                                                echo "
-                                                    <td>
-                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                ";
+                                                if(mysqli_num_rows($consultaUnir) > 0)
+                                                {
+                                                    if ($cod_alldetalle2["cod_alldetalle"]==$fila["cod_alldetalle"])
+                                                    {
+                                                        echo "
+                                                        <td rowspan='2'>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        ";
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "
+                                                            <td>
+                                                                <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        ";
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    echo "
+                                                        <td>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        ";
+                                                }
                                             }
                                         }
                                         $n++;
@@ -555,9 +946,9 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
+                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo, cod_alldetalle';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.id_m=materia.id_materia) INNER JOIN docente ON (detalle.id_d=docente.id_docente) INNER JOIN grupo ON (detalle.id_g=grupo.id_grupo)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && detalle.ciclo='I'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         
 
@@ -569,26 +960,60 @@
                                         }
                                         else
                                         {
+                                            $consultaUnir = $objeto -> SQL_consulta_condicional("detalle", "cod_alldetalle","dia = '".$_GET["dia"]."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && ha = '14:40:00'");
+                                            $cod_alldetalle2=$consultaUnir->fetch_assoc();
+
                                             while ($fila = $consulta -> fetch_assoc())
 									        {
-                                                echo "
-                                                    <td>
-                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                ";
+                                                if(mysqli_num_rows($consultaUnir) > 0)
+                                                {
+                                                    if ($cod_alldetalle2["cod_alldetalle"]==$fila["cod_alldetalle"])
+                                                    {
+
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "
+                                                            <td>
+                                                                <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        ";
+                                                    }
+                                                }
+                                                else 
+                                                {
+                                                    echo "
+                                                        <td>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    ";
+                                                }
                                             }
                                         }
                                         $n++;
@@ -611,9 +1036,9 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
+                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo, cod_alldetalle';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.id_m=materia.id_materia) INNER JOIN docente ON (detalle.id_d=docente.id_docente) INNER JOIN grupo ON (detalle.id_g=grupo.id_grupo)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && detalle.ciclo='I'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         
 
@@ -625,26 +1050,77 @@
                                         }
                                         else
                                         {
+                                            $consultaUnir = $objeto -> SQL_consulta_condicional("detalle", "cod_alldetalle","dia = '".$_GET["dia"]."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && ha = '17:10:00'");
+                                            $cod_alldetalle2=$consultaUnir->fetch_assoc();
+
                                             while ($fila = $consulta -> fetch_assoc())
 									        {
-                                                echo "
-                                                    <td>
-                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                ";
+                                                if(mysqli_num_rows($consultaUnir) > 0)
+                                                {
+                                                    if ($cod_alldetalle2["cod_alldetalle"]==$fila["cod_alldetalle"])
+                                                    {
+                                                        echo "
+                                                        <td rowspan='2'>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        ";
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "
+                                                            <td>
+                                                                <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        ";
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    echo "
+                                                        <td>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        ";
+                                                }
                                             }
                                         }
                                         $n++;
@@ -664,9 +1140,9 @@
                                 }
                                 for ($i=0; $i<$col; $i++)
                                     {
-                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo';
+                                        $campos = 'materia.materia as Materia, materia.codigomateria as CodMateria, docente.nom_usuario AS NombresUS, docente.ape_usuario AS ApellidosUS, grupo.grupo AS Grupo, grupo.tipo as Tipo, cod_alldetalle';
                                         $tabla = 'detalle INNER JOIN materia ON (detalle.id_m=materia.id_materia) INNER JOIN docente ON (detalle.id_d=docente.id_docente) INNER JOIN grupo ON (detalle.id_g=grupo.id_grupo)';
-                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && detalle.ciclo='I'");
+                                        $consulta = $objeto -> SQL_consulta_condicional($tabla, $campos,"dia = '".$_GET["dia"]."' && ha = '".$ha."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]."");
 
                                         
 
@@ -678,26 +1154,60 @@
                                         }
                                         else
                                         {
+                                            $consultaUnir = $objeto -> SQL_consulta_condicional("detalle", "cod_alldetalle","dia = '".$_GET["dia"]."' && aula = '".$arrayAula[$n]."' && detalle.YEAR=".$_SESSION["year"]." && ha = '16:20:00'");
+                                            $cod_alldetalle2=$consultaUnir->fetch_assoc();
+
                                             while ($fila = $consulta -> fetch_assoc())
 									        {
-                                                echo "
-                                                    <td>
-                                                        <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Materia]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                ";
+                                                if(mysqli_num_rows($consultaUnir) > 0)
+                                                {
+                                                    if ($cod_alldetalle2["cod_alldetalle"]==$fila["cod_alldetalle"])
+                                                    {
+
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "
+                                                            <td>
+                                                                <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        ";
+                                                    }
+                                                }
+                                                else 
+                                                {
+                                                    echo "
+                                                        <td>
+                                                            <table style='text-align:center' class='border border-dark table table-bordered table-sm'>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Materia]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-primary border border-dark'><b>$fila[CodMateria]</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[NombresUS] $fila[ApellidosUS]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='table-light border border-dark'>$fila[Grupo]$fila[Tipo]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    ";
+                                                }
                                             }
                                         }
                                         $n++;

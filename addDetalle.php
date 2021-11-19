@@ -224,7 +224,14 @@
 
                             for($j=0; $j<17; $j++)
                             {
-                                $cod_alldetalle .= $datos[$j];
+                                if ($j == 4 || $j == 5)
+                                {
+                                    
+                                }
+                                else
+                                {
+                                    $cod_alldetalle .= $datos[$j];
+                                }
                             }
                             $datos[] = $cod_alldetalle;
 
