@@ -201,10 +201,10 @@
                             $datos[] = $_GET['year'];
                             $datos[] = $_GET['dia'];
 
-                            $consultaTipo = $objeto -> SQL_consulta_condicional("grupo", "tipo", "id_grupo = ".$_POST['grupos']."");
+                            $consultaTipo = $objeto -> SQL_consulta_condicional("grupo", "grupo, tipo", "id_grupo = ".$_POST['grupos']."");
                             $tipo = mysqli_fetch_array($consultaTipo);
 
-                            $datos[] = $tipo["tipo"]; 
+                            $datos[] = $tipo["grupo"]; 
                             $datos[] = $tipo["tipo"];
                             $datos[] = "";
                             $datos[] = "v1";

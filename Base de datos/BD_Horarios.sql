@@ -11,7 +11,7 @@ estado INT(1) DEFAULT '1' COMMENT '1=activo 0=inactivo',
 PRIMARY KEY (id_ubicacion)
 );
 
-
+SELECT * FROM detalle
 DROP TABLE IF EXISTS aula;
 
 CREATE TABLE aula (
